@@ -7,9 +7,7 @@
     <title>KidsCare-Login</title>
     <link rel="apple-touch-icon" href="app-assets/images/ico/logo.png">
     <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/logo.png">
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Alef&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Alef&family=Rubik&display=swap" rel="stylesheet">
+ 
     <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/vendors-rtl.min.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css-rtl/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css-rtl/bootstrap-extended.css">
