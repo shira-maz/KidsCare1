@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Alef&family=Rubik&display=swap" rel="stylesheet">
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/vendors-rtl.min.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/vendors-rtl.min.css">
     <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/icheck.css">
     <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/custom.css">
     <!-- END: Vendor CSS-->

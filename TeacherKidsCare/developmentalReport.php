@@ -1,30 +1,49 @@
 <?php
-include ('Templates/DB.php');
-include ('Templates/menu.php');
-include ('Templates/head.php');
+include('Templates/DB.php');
+include('Templates/menu.php');
+include('Templates/head.php');
 
 $date1 =date("Y-m-d");
-$username1 = $_GET["username"]; {
+$username1 = $_GET["username"]; 
     $query ="SELECT * FROM accounts WHERE username = '$username1'";
     mysqli_query($conn, $query) or die('Error querying database.');
     $result1 = mysqli_query($conn, $query);
     $row2 = mysqli_fetch_array($result1);
-    }
+    
+
+    $query1= "SELECT date FROM developmentalreport where username = '$username1' ORDER BY date DESC LIMIT 1";
+    $res1= $conn->query($query1);
+    $row3 = $res1->fetch_assoc();
+
+
+    $q1= "SELECT * FROM developmentalreport where username='$username1' and date = '$date1'";
+    $res3= $conn->query($q1);
+    $row4 = $res3->fetch_assoc();
 
 ?>
 
 <style>
-    body{
+    h5, body{
         color:black;
     }
-    @media screen and (max-width: 600px) {
-label{
-    display:
+    .profile-card-4 h5 {
+        color:black;
+    }
+    .container {
+    margin-bottom: 4%;
 }
+
+    @media screen and (max-width: 800px) {
+label{
+    display:block;
+}
+
+    }
+    
 
 </style>
 
-<title>KidsCare-Developmental-Report</title>
+<title>KidsCare-Developmental Report</title>
 
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="rtl">
@@ -41,38 +60,35 @@ label{
                 </div>
             </div>
 
-            <div class="card profile-card-4">
+     
+  <div class="card profile-card-4">
             <div class="card-body pt-5">
                 <img alt="profile-image" class="profile"
                     src="../uploads/<?= $row2['fileToUpload'] ?>" />
                 <h5 class="card-title text-center">
                     <?= $row2['fullName'] ?> </h5>
             </div>
-            </div>
-
-            <div class="content-body">
-                <section id="line-awesome-icons">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <a class="heading-elements-toggle"><i
-                                            class="la la-ellipsis-v font-medium-3"></i></a>
-                                    <div class="heading-elements">
-                                        <ul class="list-inline mb-0">
-                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+            
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <section>
                                             <div class="container">
-                                                <div class="row">
-                     
-                        <div class="col-lg-12 col-xl-10">
+                                            
+                                            
+                                            <h4 class="text-center">  
+                                            <?php  if ($row3['date'] ==  $date1 ) 
+                                            echo " הדוח האחרון עבור ילד זה מולא היום <br/> הינך יכולה לבצע בו שינויים בעמוד זה. ";
+                                            else if ($row3['date'] == null) {
+                                            echo "לא מולאו דוחות עדיין";}
+                                            else echo "הדוח האחרון עבור ילד זה מולא בתאריך " . $row3['date']."<br>";
+                                            ?>
+                                </h4>
+                                            <form method="post" action="developmentalReportDB.php" name="developmentalreport" >
+                                            <input type="hidden" name="date" value="<?= $date1 ?>">
+                                            <input type="hidden" name="username" value="<?= $row2['username'] ?>">
+                                            <input type="hidden" name="fullName" value="<?= $row2['fullName'] ?>">
+                                            <div class="row">
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -82,37 +98,42 @@ label{
                                         </div>
 
                                         <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body " style="background-color:LightCyan;">
+                                            <div class="card-body " style="background-color:LightCyan">
                                             <div class="row skin skin-flat ">
-                                            <div class="col-md-6 col-sm-12">
-                                            <form method="post" action="developmentalReportDB.php" name="developmentalreport" >
-                                            <input type="hidden" name="date" value="<?= $date1 ?>">
-                                            <input type="hidden" name="username" value="<?= $row2['username'] ?>">
-                                            <input type="hidden" name="fullName" value="<?= $row2['fullName'] ?>">
-                                            <h5 style ="display: inline"> <b> מבין את התכנים הנלמדים בגן </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                            <label> <input type = "radio"  value="תמיד"  name="Language1" style="display: inline-block" > תמיד &nbsp;   </label>                      
-                                            <label> <input type = "radio" value="לפעמים" name="Language1" style="display:inline-block"> לפעמים &nbsp; </label>  
-                                            <label> <input type = "radio"  value="לעיתים רחוקות" name="Language1" style="margin-top: 4%; display:block"> לעיתים רחוקות &nbsp;    </label>             
-                                             </div>
-                                            <h5 style ="display: inline"> <b>מבין ועונה נכון על שאלות שנשאל </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                            <label> <input type = "radio"  value="תמיד" name="Language2" > תמיד &nbsp;     </label>                       
-                                            <label> <input type = "radio"  value="לפעמים" name="Language2" > לפעמים &nbsp; </label>  
-                                            <label> <input type = "radio"  value="לעיתים רחוקות" name="Language2" style="margin-top: 4%;"> לעיתים רחוקות &nbsp;  </label>  
-                                             </div>
-                                            <h5 style ="display: inline"> <b>מתאר באופן מילולי תמונות שמוצגות לו </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                            <label> <input type = "radio"  value="תמיד" name="Language3" style="margin-top: 4%;" > תמיד &nbsp;  </label>                          
-                                             <label> <input type = "radio"  value="לפעמים" name="Language3" style="margin-top: 4%;"> לפעמים &nbsp; </label>  
-                                             <label><input type = "radio"  value="לעיתים רחוקות" name="Language3" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
-                                             </div>
+                                            <div class="col-md-10 col-sm-12">
+                                         
 
-                                             <h5 style ="display: inline"> <b>האם קיים חוסר שטף בדיבור (גמגום)?</b></h5>
-                                             <div class="container" style="margin-bottom: 3%; ">
-                                             <label>  <input type = "radio" value="תמיד" name="Language4"  > תמיד &nbsp;             </label>               
-                                            <label>  <input type = "radio" value="לפעמים" name="Language4" > לפעמים &nbsp; </label>  
-                                            <label> <input type = "radio" value="לעיתים רחוקות" name="Language4" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
+                                            <div class="container">
+                                            <h5> <b> מבינ/ה את התכנים הנלמדים בגן</b> </h5>
+                                            <label> <input type = "radio" value="תמיד"  name="Language1" required <?php if (isset ($row4['Language1']) && $row4['Language1'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;   </label>                      
+                                            <label> <input type = "radio" value="לעיתים" name="Language1" <?php if (isset ($row4['Language1']) && $row4['Language1'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                            <label> <input type = "radio" value="לעיתים רחוקות" name="Language1" <?php if (isset ($row4['Language1']) && $row4['Language1'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp;    </label>      
+                                            <label> <input type = "radio" value="אף פעם" name="Language1" <?php if (isset ($row4['Language1']) && $row4['Language1'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp;    </label>             
+       
+                                             </div>
+                                            <div class="container">
+                                            <h5> <b>מבינ/ה ועונה נכון על שאלות שנשאל</b> </h5>
+                                            <label> <input type = "radio"  value="תמיד" name="Language2" required <?php if (isset ($row4['Language2']) && $row4['Language2'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;     </label>                       
+                                            <label> <input type = "radio"  value="לעיתים" name="Language2" <?php if (isset ($row4['Language2']) && $row4['Language2'] == "לעיתים" ) { echo 'checked';}?> > לעיתים &nbsp; </label>  
+                                            <label> <input type = "radio"  value="לעיתים רחוקות" name="Language2" <?php if (isset ($row4['Language2']) && $row4['Language2'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp;  </label>  
+                                            <label> <input type = "radio"  value="אף פעם" name="Language2" <?php if (isset ($row4['Language2']) && $row4['Language2'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp;  </label>  
+
+                                             </div>
+                                            <div class="container">
+                                            <h5> <b>מתאר/ת באופן מילולי תמונות שמוצגות לו </b></h5>
+                                            <label>  <input type = "radio"  value="תמיד" name="Language3" required <?php if (isset ($row4['Language3']) && $row4['Language3'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;  </label>                          
+                                            <label>  <input type = "radio"  value="לעיתים" name="Language3"  <?php if (isset ($row4['Language3']) && $row4['Language3'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="לעיתים רחוקות" name="Language3" <?php if (isset ($row4['Language3']) && $row4['Language3'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="אף פעם" name="Language3" <?php if (isset ($row4['Language3']) && $row4['Language3'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+
+                                             </div>
+                                             <div class="container">
+                                             <h5> <b>האם קיים חוסר שטף בדיבור (גמגום)?</b></h5>
+                                            <label> <input type = "radio" value="תמיד" name="Language4" required <?php if (isset ($row4['Language4']) && $row4['Language4'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;             </label>               
+                                            <label> <input type = "radio" value="לעיתים" name="Language4" <?php if (isset ($row4['Language4']) && $row4['Language4'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                            <label> <input type = "radio" value="לעיתים רחוקות" name="Language4" <?php if (isset ($row4['Language4']) && $row4['Language4'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                            <label> <input type = "radio" value="אף פעם" name="Language4" <?php if (isset ($row4['Language4']) && $row4['Language4'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+
                                              </div>
                                             </div>
                                         </div>
@@ -123,7 +144,7 @@ label{
                         </div>
                         </div>
 
-                        <div class="col-lg-12 col-xl-10">
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -134,34 +155,41 @@ label{
                                                 </button>
                                             </h4>
                                         </div>
+                         <div id="accordionC2" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
+                                <div class="card-body" style="background-color:Lavender">
+                                   <div class="row skin skin-flat">
+                                        <div class="col-md-10 col-sm-12">
+                                            <div class="container">
+                                            <h5> <b> יוצר/ת קשר עם ילדים ומסוגל/ת ליזום משחק </b></h5>
+                                                    <label>  <input type = "radio"  value="תמיד" name="communication1" required <?php if (isset ($row4['communication1']) && $row4['communication1'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;     </label>                       
+                                                    <label>  <input type = "radio"  value="לעיתים" name="communication1"  <?php if (isset ($row4['communication1']) && $row4['communication1'] == "לעיתים" ) { echo 'checked';}?> > לעיתים &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication1"  <?php if (isset ($row4['communication1']) && $row4['communication1'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp;   </label>    
+                                                    <label>  <input type = "radio"  value="אף פעם" name="communication1"  <?php if (isset ($row4['communication1']) && $row4['communication1'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp;   </label>                                                             
+                                                         
+                                                    </div>
+                                                    <div class="container">
+                                                    <h5> <b> משתתפ/ת בתחרויות ומקבל/ת הן הצלחה והן כישלון </b></h5>
+                                                    <label>  <input type = "radio"  value="תמיד" name="communication2"  required <?php if (isset ($row4['communication2']) && $row4['communication2'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;      </label>                      
+                                                    <label>  <input type = "radio"  value="לעיתים" name="communication2" <?php if (isset ($row4['communication2']) && $row4['communication2'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication2" <?php if (isset ($row4['communication2']) && $row4['communication2'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp;     </label>                                                    
+                                                    <label>  <input type = "radio"  value="אף פעם" name="communication2" <?php if (isset ($row4['communication2']) && $row4['communication2'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp;     </label>                                                   
+                                    
+                                                    </div>
+                                                    <div class="container">
+                                                    <h5> <b> מגיב/ה באלימות פיזית או מילולית </b></h5>
+                                                    <label>  <input type = "radio"  value="תמיד" name="communication3"  required <?php if (isset ($row4['communication3']) && $row4['communication3'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;     </label>                       
+                                                    <label>  <input type = "radio"  value="לעיתים" name="communication3" <?php if (isset ($row4['communication3']) && $row4['communication3'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication3" <?php if (isset ($row4['communication3']) && $row4['communication3'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="אף פעם" name="communication3" <?php if (isset ($row4['communication3']) && $row4['communication3'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+                                                    </div>
 
-                                        <div id="accordionC2" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body" style="background-color:Lavender; opacity: 0.8">
-                                            <div class="row skin skin-flat">
-                                            <div class="col-md-6 col-sm-12">
-                                            <h5 style ="display: inline"> <b> יוצר קשר עם ילדים ומסוגל ליזום משחק </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                                    <input type = "radio"  value="תמיד" name="communication1"  > תמיד &nbsp;     </label>                       
-                                                    <label>    <input type = "radio"  value="לפעמים" name="communication1" > לפעמים &nbsp; </label>  
-                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication1" style="margin-top: 4%;"> לעיתים רחוקות &nbsp;   </label>                                                             
-                                                    </div>
-                                                    <h5 style ="display: inline"> <b> משתתף בתחרויות ומקבל הן הצלחה והן כישלון </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label>  <input type = "radio"  value="תמיד" name="communication2"  > תמיד &nbsp;      </label>                      
-                                                    <label>  <input type = "radio"  value="לפעמים" name="communication2" > לפעמים &nbsp; </label>  
-                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication2" style="margin-top: 4%;"> לעיתים רחוקות &nbsp;     </label>                                                   
-                                                    </div>
-                                                    <h5 style ="display: inline"> <b> מגיב באלימות פיזית או מילולית </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label>   <input type = "radio"  value="תמיד" name="communication3"  > תמיד &nbsp;     </label>                       
-                                                    <label>  <input type = "radio"  value="לפעמים" name="communication3" > לפעמים &nbsp; </label>  
-                                                    <label>    <input type = "radio"  value="לעיתים רחוקות" name="communication3" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
-                                                    </div>
-                                                    <h5 style ="display: inline"> <b> אינו מפרש רמזים וסיטואציות חברתיות </b></h5>
-                                                    <div class="container" style="margin-bottom: 3%; ">
-                                                    <label>  <input type = "radio"  value="תמיד" name="communication4"  > תמיד &nbsp;              </label>              
-                                                    <label>     <input type = "radio"  value="לפעמים" name="communication4"> לפעמים &nbsp; </label>  
-                                                    <label>      <input type = "radio"  value="לעיתים רחוקות" name="communication4" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
+                                                    <div class="container">
+                                                    <h5 style> <b> אינו/ה מפרש/ת רמזים וסיטואציות חברתיות </b></h5>
+                                                    <label>  <input type = "radio"  value="תמיד" name="communication4"  required  <?php if (isset ($row4['communication4']) && $row4['communication4'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp; </label>                         
+                                                    <label>  <input type = "radio"  value="לעיתים" name="communication4" <?php if (isset ($row4['communication4']) && $row4['communication4'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="communication4" <?php if (isset ($row4['communication4']) && $row4['communication4'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                                    <label>  <input type = "radio"  value="אף פעם" name="communication4" <?php if (isset ($row4['communication4']) && $row4['communication4'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+
                                                     </div>
                                             </div>
                                         </div>
@@ -169,10 +197,10 @@ label{
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        </div>
+                    </div>
+                    </div> 
 
-                        <div class="col-lg-12 col-xl-10">
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -185,50 +213,47 @@ label{
                                         </div>
 
                                         <div id="accordionC3" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body" style="background-color:LavenderBlush; opacity: 0.8">
+                                            <div class="card-body" style="background-color:LavenderBlush">
                                             <div class="row skin skin-flat ">
                                             <div class="col-md-10 col-sm-12 col-xs-12">
-                                            <h5 style ="display: inline"> <b> אחיזה ושליטה בכלי כתיבה </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                                   <label> <input type = "radio"  value="בהתאם לגיל" name="motorica1"  > בהתאם לגיל &nbsp;     </label>                    
-                                                   <label> <input type = "radio"  value="מתקשה" name="motorica1" > מתקשה &nbsp;</label>
-                                                   <label>  <input type = "radio"  value=" מתקשה מאוד" name="motorica1" style="margin-top: 4%;"> מתקשה מאוד &nbsp;</label> 
-                                                   <label> <input type = "radio"  value=" נמנע" name="motorica1" style="margin-top: 4%;" > נמנע &nbsp;     </label> 
+                                                   <div class="container">
+                                                   <h5> <b> אחיזה ושליטה בכלי כתיבה </b></h5>
+                                                   <label> <input type = "radio"  value="בהתאם לגיל" name="motorica1" required <?php if (isset ($row4['motorica1']) && $row4['motorica1'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp;     </label>                    
+                                                   <label> <input type = "radio"  value="מתקשה" name="motorica1" <?php if (isset ($row4['motorica1']) && $row4['motorica1'] == "מתקשה" ) { echo 'checked';}?> > מתקשה &nbsp;</label>
+                                                   <label> <input type = "radio"  value="מתקשה מאוד" name="motorica1" <?php if (isset ($row4['motorica1']) && $row4['motorica1'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp;</label> 
+                                                   <label> <input type = "radio"  value="נמנע/ת" name="motorica1"  <?php if (isset ($row4['motorica1']) && $row4['motorica1'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp;     </label> 
                                                     </div>
-
-                                                    <h5 style ="display: inline"> <b> ציור, צביעה ויצירה </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label> <input type = "radio"  value="בהתאם לגיל" name="motorica2" > בהתאם לגיל &nbsp; </label>                        
-                                                    <label> <input type = "radio"  value="מתקשה" name="motorica2" > מתקשה &nbsp; </label> 
-                                                    <label><input type = "radio"  value=" מתקשה מאוד" name="motorica2" style="margin-top: 4%;"> מתקשה מאוד &nbsp;</label> 
-                                                    <label> <input type = "radio"  value=" נמנע" name="motorica2" style="margin-top: 4%;" > נמנע &nbsp; </label> 
+                                                    <div class="container">
+                                                    <h5> <b> ציור, צביעה ויצירה </b></h5>
+                                                    <label> <input type = "radio"  value="בהתאם לגיל" name="motorica2" required <?php if (isset ($row4['motorica2']) && $row4['motorica2'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp; </label>                        
+                                                    <label> <input type = "radio"  value="מתקשה" name="motorica2" <?php if (isset ($row4['motorica2']) && $row4['motorica2'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp; </label> 
+                                                    <label> <input type = "radio"  value="מתקשה מאוד" name="motorica2"" <?php if (isset ($row4['motorica2']) && $row4['motorica2'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp;</label> 
+                                                    <label> <input type = "radio"  value="נמנע/ת" name="motorica2" <?php if (isset ($row4['motorica2']) && $row4['motorica2'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp; </label> 
                                                     </div>
-
-                                                    <h5 style ="display: inline"> <b> משחקי בנייה והרכבה </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label><input type = "radio"  value="בהתאם לגיל" name="motorica3"  > בהתאם לגיל &nbsp;</label>                    
-                                                    <label> <input type = "radio"  value="מתקשה" name="motorica3" > מתקשה &nbsp;</label> 
-                                                    <label>  <input type = "radio"  value=" מתקשה מאוד" name="motorica3" style="margin-top: 4%;"> מתקשה מאוד &nbsp;</label> 
-                                                    <label>  <input type = "radio"  value=" נמנע" name="motorica3" style="margin-top: 4%;" > נמנע &nbsp;</label> 
+                                                    <div class="container">
+                                                    <h5> <b> משחקי בנייה והרכבה </b></h5>
+                                                    <label> <input type = "radio"  value="בהתאם לגיל" name="motorica3" required  <?php if (isset ($row4['motorica3']) && $row4['motorica3'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp;</label>                    
+                                                    <label> <input type = "radio"  value="מתקשה" name="motorica3" <?php if (isset ($row4['motorica3']) && $row4['motorica3'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp;</label> 
+                                                    <label> <input type = "radio"  value="מתקשה מאוד" name="motorica3" <?php if (isset ($row4['motorica3']) && $row4['motorica3'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp;</label> 
+                                                    <label> <input type = "radio"  value="נמנע/ת" name="motorica3" <?php if (isset ($row4['motorica3']) && $row4['motorica3'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp;</label> 
                                                     </div>
-
-                                                    <h5 style ="display: inline"> <b> מניפולציות בכף היד (חרוזים והרכבות קטנות) </b></h5>
-                                                    <div class="container" style="margin-bottom: 3%; ">
-                                                    <label> <input type = "radio" value="בהתאם לגיל" name="motorica4" > בהתאם לגיל &nbsp; </label>                       
-                                                    <label> <input type = "radio" value="מתקשה" name="motorica4" > מתקשה &nbsp;</label> 
-                                                    <label><input type = "radio" value=" מתקשה מאוד" name="motorica4" style="margin-top: 4%;"> מתקשה מאוד &nbsp;</label> 
-                                                    <label><input type = "radio" value=" נמנע" name="motorica4" style="margin-top: 4%;" > נמנע &nbsp;</label> 
+                                                    <div class="container" ">
+                                                    <h5> <b> מניפולציות בכף היד (חרוזים והרכבות קטנות) </b></h5>
+                                                    <label> <input type = "radio" value="בהתאם לגיל" name="motorica4" required <?php if (isset ($row4['motorica4']) && $row4['motorica4'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp; </label>                       
+                                                    <label> <input type = "radio" value="מתקשה" name="motorica4" <?php if (isset ($row4['motorica4']) && $row4['motorica4'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp;</label> 
+                                                    <label> <input type = "radio" value="מתקשה מאוד" name="motorica4" <?php if (isset ($row4['motorica4']) && $row4['motorica4'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp;</label> 
+                                                    <label> <input type = "radio" value="נמנע/ת" name="motorica4" <?php if (isset ($row4['motorica4']) && $row4['motorica4'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp;</label> 
                                                     </div>
-    </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         </div>
-                        </div>
+                    </div>
+                    </div>
 
-                        <div class="col-lg-12 col-xl-10">
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -241,36 +266,42 @@ label{
                                         </div>
 
                                         <div id="accordionC4" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body" style="background-color:HoneyDew; opacity: 0.8">
+                                            <div class="card-body" style="background-color:HoneyDew">
                                             <div class="row skin skin-flat ">
-                                            <div class="col-md-10 col-sm-12">                                            <h5 style ="display: inline"> <b> אימפולסיבי </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                            <label>   <input type = "radio"  value="תמיד" name="attention1"  > תמיד &nbsp;                 </label>           
-                                            <label>   <input type = "radio"  value="לפעמים" name="attention1" > לפעמים &nbsp; </label>  
-                                            <label>    <input type = "radio"  value="לעיתים רחוקות" name="attention1" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
-                                        </div>
+                                            <div class="col-md-10 col-sm-12">                                            
+                                            <div class="container">
+                                            <h5 style> <b> אימפולסיבי/ת </b></h5>
+                                            <label>   <input type = "radio"  value="תמיד" name="attention1" required <?php if (isset ($row4['attention1']) && $row4['attention1'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;   </label>           
+                                            <label>   <input type = "radio"  value="לעיתים" name="attention1" <?php if (isset ($row4['attention1']) && $row4['attention1'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                            <label>   <input type = "radio"  value="לעיתים רחוקות" name="attention1" <?php if (isset ($row4['attention1']) && $row4['attention1'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                            <label>   <input type = "radio"  value="אף פעם" name="attention1" <?php if (isset ($row4['attention1']) && $row4['attention1'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
 
-                                                    <h5 style ="display: inline"> <b> קשוב להוראות </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label>  <input type = "radio"  value="תמיד" name="attention2"  > תמיד &nbsp;              </label>              
-                                                    <label>  <input type = "radio"  value="לפעמים" name="attention2" > לפעמים &nbsp; </label>  
-                                                    <label>  <input type = "radio"   value="לעיתים רחוקות" name="attention2" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
-                                                    </div>
-
-                                                    <h5 style ="display: inline"> <b> מתמיד במשימות </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label><input type = "radio"  value="תמיד" name="attention3"  > תמיד &nbsp;          </label>                  
-                                                    <label> <input type = "radio"  value="לפעמים" name="attention3" > לפעמים &nbsp; </label>  
-                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="attention3" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
-                                                    </div>
-
-                                                    <h5 style ="display: inline"> <b> מרבה להתנועע </b></h5>
-                                                    <div class="container" style="margin-bottom: 3%; ">
-                                                    <label> <input type = "radio"  value="תמיד" name="attention4" > תמיד &nbsp;           </label>                 
-                                                    <label> <input type = "radio"  value="לפעמים" name="attention4" > לפעמים &nbsp; </label>  
-                                                    <label>  <input type = "radio"  value="לעיתים רחוקות" name="attention4" style="margin-top: 4%;"> לעיתים רחוקות &nbsp; </label>  
                                             </div>
-    </div>
+                                            <div class="container">
+                                            <h5> <b> קשוב/ה להוראות </b></h5>
+                                             <label>  <input type = "radio"  value="תמיד" name="attention2"  required <?php if (isset ($row4['attention2']) && $row4['attention2'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;  </label>              
+                                             <label>  <input type = "radio"  value="לעיתים" name="attention2" <?php if (isset ($row4['attention2']) && $row4['attention2'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                             <label>  <input type = "radio"   value="לעיתים רחוקות" name="attention2" <?php if (isset ($row4['attention2']) && $row4['attention2'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label> 
+                                             <label>  <input type = "radio"   value="אף פעם" name="attention2" <?php if (isset ($row4['attention2']) && $row4['attention2'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+ 
+                                             </div>
+                                            <div class="container"  >
+                                            <h5> <b> מתמיד/ה במשימות </b></h5>
+                                            <label> <input type = "radio"  value="תמיד" name="attention3"  required <?php if (isset ($row4['attention3']) && $row4['attention3'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp; </label>                  
+                                            <label> <input type = "radio"  value="לעיתים" name="attention3" <?php if (isset ($row4['attention3']) && $row4['attention3'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                            <label> <input type = "radio"  value="לעיתים רחוקות" name="attention3" <?php if (isset ($row4['attention3']) && $row4['attention3'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                            <label> <input type = "radio"  value="אף פעם" name="attention3" <?php if (isset ($row4['attention3']) && $row4['attention3'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+
+                                            </div>
+                                             <div class="container" >
+                                             <h5> <b> מרבה להתנועע </b></h5>
+                                             <label> <input type = "radio"  value="תמיד" name="attention4" required <?php if (isset ($row4['attention4']) && $row4['attention4'] == "תמיד" ) { echo 'checked';}?>> תמיד &nbsp;   </label>                 
+                                             <label> <input type = "radio"  value="לעיתים" name="attention4" <?php if (isset ($row4['attention4']) && $row4['attention4'] == "לעיתים" ) { echo 'checked';}?>> לעיתים &nbsp; </label>  
+                                             <label> <input type = "radio"  value="לעיתים רחוקות" name="attention4" <?php if (isset ($row4['attention4']) && $row4['attention4'] == "לעיתים רחוקות" ) { echo 'checked';}?>> לעיתים רחוקות &nbsp; </label>  
+                                             <label> <input type = "radio"  value="אף פעם" name="attention4" <?php if (isset ($row4['attention4']) && $row4['attention4'] == "אף פעם" ) { echo 'checked';}?>> אף פעם &nbsp; </label>  
+
+                                             </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -279,7 +310,7 @@ label{
                         </div>
                         </div>
 
-                        <div class="col-lg-12 col-xl-10">
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -292,43 +323,40 @@ label{
                                         </div>
 
                                         <div id="accordionC5" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body" style="background-color:LightCyan; opacity: 0.8">
+                                            <div class="card-body" style="background-color:LightCyan">
                                             <div class="row skin skin-flat ">
                                             <div class="col-md-10 col-sm-12">
-                                            <h5 style ="display: inline"> <b> הליכה וריצה </b></h5>
-                                            <div class="container" style="margin-bottom: 5%; ">
-                                            <label>    <input type = "radio" value="בהתאם לגיל" name="movement1"  > בהתאם לגיל &nbsp; &nbsp;    </label>                         
-                                            <label>    <input type = "radio"   value="מתקשה" name="movement1" > מתקשה &nbsp; </label>  
-                                            <label>    <input type = "radio"  value="מתקשה מאוד" name="movement1" style="margin-top: 4%;" > מתקשה מאוד &nbsp; </label>  
-                                            <label>     <input type = "radio"  value="נמנע" name="movement1" style="margin-top: 4%;" > נמנע &nbsp; </label>  
-                                                    </div>
-
-                                                    <h5 style ="display: inline"> <b> קפיצה </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label>      <input type = "radio" value="בהתאם לגיל" name="movement2"  > בהתאם לגיל &nbsp; &nbsp;    </label>                       
-                                                    <label>      <input type = "radio"  value="מתקשה" name="movement2"> מתקשה &nbsp; </label>  
-                                                    <label>      <input type = "radio"  value="מתקשה מאוד" name="movement2" style="margin-top: 4%;" > מתקשה מאוד &nbsp; </label>  
-                                                    <label>     <input type = "radio"  value="נמנע" name="movement2" style="margin-top: 4%;" > נמנע &nbsp; </label>  
-                                                    </div>
-
-                                                    <h5 style ="display: inline"> <b> השתתפות בריתמיקה </b></h5>
-                                                    <div class="container" style="margin-bottom: 5%; ">
-                                                    <label>  <input type = "radio"  value="בהתאם לגיל" name="movement3"> בהתאם לגיל &nbsp; &nbsp;            </label>                 
-                                                    <label>   <input type = "radio" value="מתקשה" name="movement3" > מתקשה &nbsp; </label>  
-                                                    <label>   <input type = "radio"  value="מתקשה מאוד" name="movement3" style="margin-top: 4%;" > מתקשה מאוד &nbsp; </label>  
-                                                    <label>   <input type = "radio"  value="נמנע" name="movement3" style="margin-top: 4%;" > נמנע &nbsp; </label>  
-                                                 </div>
-
-                                                    <h5 style ="display: inline"> <b> משחקי כדור </b></h5>
-                                                    <div class="container" style ="margin-bottom: 3%; ">   
-                                                    <label> <input type = "radio"  value="בהתאם לגיל" name="movement4" > בהתאם לגיל &nbsp;&nbsp;     </label>                         
-                                                    <label>   <input type = "radio"  value="מתקשה" name="movement4" > מתקשה &nbsp; </label>  
-                                                    <label>   <input type = "radio"  value="מתקשה מאוד" name="movement4" style="margin-top: 4%;" > מתקשה מאוד &nbsp; </label> 
-                                                    <label>   <input type = "radio"   value="נמנע" name="movement4" style="margin-top: 4%;" > נמנע &nbsp; </label> 
-                                                    </div>
-
+                                            
+                                            <div class="container">
+                                            <h5> <b> הליכה וריצה </b></h5>
+                                            <label>  <input type = "radio" value="בהתאם לגיל" name="movement1" required <?php if (isset ($row4['movement1']) && $row4['movement1'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp; </label>                         
+                                            <label>  <input type = "radio"   value="מתקשה" name="movement1" <?php if (isset ($row4['movement1']) && $row4['movement1'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="מתקשה מאוד" name="movement1"  <?php if (isset ($row4['movement1']) && $row4['movement1'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="נמנע/ת" name="movement1"  <?php if (isset ($row4['movement1']) && $row4['movement1'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp; </label>  
+                                            </div>
+                                            <div class="container" >
+                                            <h5> <b> קפיצה </b></h5>
+                                            <label>   <input type = "radio" value="בהתאם לגיל" name="movement2"  required <?php if (isset ($row4['movement2']) && $row4['movement2'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp; </label>                       
+                                            <label>   <input type = "radio"  value="מתקשה" name="movement2"  <?php if (isset ($row4['movement2']) && $row4['movement2'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp; </label>  
+                                            <label>   <input type = "radio"  value="מתקשה מאוד" name="movement2"  <?php if (isset ($row4['movement2']) && $row4['movement2'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp; </label>  
+                                            <label>   <input type = "radio"  value="נמנע/ת" name="movement2" <?php if (isset ($row4['movement2']) && $row4['movement2'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp; </label>  
+                                            </div>
+                                             <div class="container" > 
+                                            <h5> <b> השתתפות בריתמיקה </b></h5>
+                                            <label>  <input type = "radio"  value="בהתאם לגיל" name="movement3" required <?php if (isset ($row4['movement3']) && $row4['movement3'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp; </label>                 
+                                            <label>  <input type = "radio" value="מתקשה" name="movement3"  <?php if (isset ($row4['movement3']) && $row4['movement3'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="מתקשה מאוד" name="movement3"  <?php if (isset ($row4['movement3']) && $row4['movement3'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp; </label>  
+                                            <label>  <input type = "radio"  value="נמנע/ת" name="movement3" <?php if (isset ($row4['movement3']) && $row4['movement3'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp; </label>  
+                                            </div>
+                                             <div class="container"> 
+                                              <h5> <b> משחקי כדור </b></h5>
+                                              <label>   <input type = "radio"  value="בהתאם לגיל" name="movement4" required <?php if (isset ($row4['movement4']) && $row4['movement4'] == "בהתאם לגיל" ) { echo 'checked';}?>> בהתאם לגיל &nbsp;   </label>                         
+                                              <label>   <input type = "radio"  value="מתקשה" name="movement4"  <?php if (isset ($row4['movement4']) && $row4['movement4'] == "מתקשה" ) { echo 'checked';}?>> מתקשה &nbsp; </label>  
+                                              <label>   <input type = "radio"  value="מתקשה מאוד" name="movement4"  <?php if (isset ($row4['movement4']) && $row4['movement4'] == "מתקשה מאוד" ) { echo 'checked';}?>> מתקשה מאוד &nbsp; </label> 
+                                              <label>   <input type = "radio"   value="נמנע/ת" name="movement4" <?php if (isset ($row4['movement4']) && $row4['movement4'] == "נמנע/ת" ) { echo 'checked';}?>> נמנע/ת &nbsp; </label> 
+                                              </div>
                                         </div>
-    </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -336,7 +364,8 @@ label{
                         </div>
                         </div>
 
-                        <div class="col-lg-12 col-xl-10">
+
+                        <div class="col-lg-12 col-xl-10" style="margin-right:5%;">
                             <div id="accordion3" class="card-accordion">
                                 <div class="card collapse-icon accordion-icon-rotate">
                                     <div class="card">
@@ -349,29 +378,26 @@ label{
                                         </div>
 
                                         <div id="accordionC6" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                            <div class="card-body" style="background-color:Lavender; opacity: 0.8">
+                                            <div class="card-body" style="background-color:Lavender">
                                             <div class="row skin skin-flat ">
                                             <div class="col-md-10 col-sm-12">
-                                            <h5 style ="display: inline"> <b> ביצוע משימות </b></h5>
-                                            <div class="container" style ="margin-bottom: 5%; ">
-                                            <label>     <input type = "radio"  value="עצמאי" name="independence1"  > עצמאי &nbsp;         </label>                  
-                                            <label>     <input type = "radio"  value="לפעמים תלוי" name="independence1" > לפעמים תלוי &nbsp; </label> 
-                                            <label>   <input type = "radio"  value="תלוי במבוגר" name="independence1"  > תלוי במבוגר &nbsp; </label> 
-                                                </div>
-
-                                                    <h5 style ="display: inline"> <b> אכילה </b></h5>
-                                                    <div class="container" style ="margin-bottom: 5%; ">
-                                                    <label>       <input type = "radio"   value="עצמאי" name="independence2" > עצמאי &nbsp;   </label>                
-                                                    <label>        <input type = "radio"  value="לפעמים תלוי" name="independence2" > לפעמים תלוי &nbsp; </label> 
-                                                    <label>       <input type = "radio"  value="תלוי במבוגר" name="independence2" > תלוי במבוגר &nbsp; </label> 
-                                                           
-                                                    </div>
-
-                                                    <h5 style ="display: inline"> <b> שמירה על הניקיון  </b></h5><br>
-                                                    <div class="container" style ="margin-bottom: 5%;">
-                                                    <label>      <input type = "radio"  value="עצמאי" name="independence3" > עצמאי &nbsp;            </label>               
-                                                    <label>       <input type = "radio"  value="לפעמים תלוי" name="independence3"> לפעמים תלוי &nbsp;  </label> 
-                                                    <label>      <input type = "radio"  value="תלוי במבוגר" name="independence3" > תלוי במבוגר &nbsp; </label> 
+                                            <div class="container" >
+                                            <h5> <b> ביצוע משימות </b></h5>
+                                            <label>  <input type = "radio"  value="עצמאי/ת" name="independence1" required <?php if (isset ($row4['independence1']) && $row4['independence1'] == "עצמאי/ת" ) { echo 'checked';}?>>  עצמאי/ת &nbsp;   </label>                  
+                                            <label>  <input type = "radio"  value="לעיתים תלוי/ה" name="independence1"   <?php if (isset ($row4['independence1']) && $row4['independence1'] == "לעיתים תלוי/ה" ) { echo 'checked';}?>> לעיתים תלוי/ה &nbsp; </label> 
+                                            <label>  <input type = "radio"  value="תלוי/ה במבוגר" name="independence1"   <?php if (isset ($row4['independence1']) && $row4['independence1'] == "תלוי/ה במבוגר" ) { echo 'checked';}?>> תלוי/ה במבוגר &nbsp; </label> 
+                                            </div>
+                                            <div class="container">
+                                            <h5> <b> אכילה </b></h5>
+                                            <label>   <input type = "radio"   value="עצמאי/ת" name="independence2" required  <?php if (isset ($row4['independence2']) && $row4['independence2'] == "עצמאי/ת" ) { echo 'checked';}?>>  עצמאי/ת &nbsp;   </label>                
+                                            <label>   <input type = "radio"  value="לעיתים תלוי/ה" name="independence2"  <?php if (isset ($row4['independence2']) && $row4['independence2'] == "לעיתים תלוי/ה" ) { echo 'checked';}?>> לעיתים תלוי/ה &nbsp; </label> 
+                                            <label>   <input type = "radio"  value="תלוי/ה במבוגר" name="independence2"  <?php if (isset ($row4['independence2']) && $row4['independence2'] == "תלוי/ה במבוגר" ) { echo 'checked';}?>> תלוי/ה במבוגר &nbsp; </label>         
+                                           </div>
+                                            <div class="container">
+                                           <h5> <b> שמירה על הניקיון  </b></h5><br>
+                                            <label>   <input type = "radio"  value="עצמאי/ת" name="independence3" required  <?php if (isset ($row4['independence3']) && $row4['independence3'] == "עצמאי/ת" ) { echo 'checked';}?>> עצמאי/ת &nbsp;      </label>               
+                                            <label>   <input type = "radio"  value="לעיתים תלוי/ה" name="independence3"  <?php if (isset ($row4['independence3']) && $row4['independence3'] == "לעיתים תלוי/ה" ) { echo 'checked';}?>> לעיתים תלוי/ה &nbsp;  </label> 
+                                            <label>   <input type = "radio"  value="תלוי/ה במבוגר" name="independence3"  <?php if (isset ($row4['independence3']) && $row4['independence3'] == "תלוי/ה במבוגר" ) { echo 'checked';}?>> תלוי/ה במבוגר &nbsp; </label> 
                                             </div>
                                             </div>
                                             </div>
@@ -381,8 +407,10 @@ label{
                                     </div>
                                 </div>
                             </div>
-                        </div>                     
-                        <input type = "submit" value = "עדכן" class="btn round btn-block btn-glow btn-bg-gradient-x-purple-blue col-8 mr-1 mb-1 " style="margin-top:5%; margin-right:10%;">                                   
+                        </div>
+                        </div>
+                     
+                        <input type = "submit" value = "שלח דוח" class="btn round btn-block btn-glow btn-bg-gradient-x-purple-blue col-8 mr-1 mb-1 " style="margin-top:5%; margin-right:10%;">                                   
                         </form> 
                                                 </div>
                                             </div>
@@ -400,9 +428,9 @@ label{
     </div>
 
 
-    <?php 
-   include ('Templates/footer.php');
-   include ('Templates/JS.php');
+    <?php
+   include('Templates/footer.php');
+   include('Templates/JS.php');
 ?>
 
 </body>

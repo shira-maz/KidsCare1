@@ -5,20 +5,57 @@ include ('Templates/menu.php');
 include ('Templates/head.php');
 
 $date1 =date("Y-m-d");
-
 if (isset($_POST['search'])) {
     $date1 = $_POST['dates1'];
 }
+
+$username1 = $_GET["username"]; 
+    $query ="SELECT * FROM accounts WHERE username = '$username1'";
+    mysqli_query($conn, $query) or die('Error querying database.');
+    $result1 = mysqli_query($conn, $query);
+    $row2 = mysqli_fetch_array($result1);
+    
+
 ?>
 
 <style>
 td, th {
    text-align: center;
 }
+
+h5, p{
+    display: inline;
+     text-align: right;
+}
+
+h3{
+    color: black;
+}
+
+
+.card-body{
+    margin-bottom: 5%;
+}
+
+body{
+    color:black;
+}
+.profile-card-4 h5{
+    color:#4d4d4d;
+
+}
+
+@media screen and (max-width: 800px) {
+h5, p{
+    display:block;
+    text-align: center;
+}
+}
+
 </style>
 
 
-<title>KidsCare-Previous-Developmental-Report</title>
+<title>KidsCare-Previous Developmental Report</title>
 
 
 <!DOCTYPE html>
@@ -32,281 +69,138 @@ td, th {
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h3 class="content-header-title">דיווחי התפתחות קודמים</h3>
+                    <h3 class="content-header-title">דיווחי התפתחות </h3>
                 </div>
             </div>
 
-            <div class="content-body">
-            <section id="line-awesome-icons">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                               
+            <div class="card profile-card-4 " >
+            <div class="card-body pt-5" style ="text-align: center;">
+                <img alt="profile-image" class="profile"
+                    src="../uploads/<?= $row2['fileToUpload'] ?>" />
+                <h5 class="card-title">
+                    <?= $row2['fullName'] ?> </h5>
+            </div>
+          
+
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <section>
-                                            <div class="container">
+                                            <div class="text-center container">
                                                 <div class="row">
                     
-                                       <div class="col-lg-12 col-xl-12 text-center" style="margin-bottom:10%" >
-                                           <h3> אנא בחר תאריך </h3>
-                                        <form method="post" >
-                                            <input type="date" name = "dates1" class="col-xs-4">
-                                            <button type = "submit" name="search"   style = "display:inline; line-height: 7.5px; padding:11px 15px 11px 15px; " class="btn btn-glow btn-bg-gradient-x-purple-blue col-xs-4"> בחר </button>
-                                        </form>
-                                   </div>
-
+                                      
                                         <?php   
-                                            $username1 = $_GET["username"];  
-                                           $qD= "SELECT * from  developmentalreport WHERE date = '$date1' AND username = '$username1'";
-                                           $resD= $conn->query($qD);
-                                           $countD = $resD->num_rows;
+                                        $qD= "SELECT * from  developmentalreport where username = '$username1'";
+                                        $resD= $conn->query($qD);
+                                        $countD = $resD->num_rows;
 
-                                        if ($countD > 0) {?>
-                                         <h3 class = "text-center" > דיווח לתאריך  <?= $date1 ?> </h3> 
-                                         
-                                                                               
-                                        <?php 
+                                        if ($countD > 0) {
+                                            $i=1;
                                             while ($row3D = $resD->fetch_assoc()) { ?>
-                                           <h4 class = "text-center" > <?php echo '  ---->  '.$row3D['fullName'] ?> </h4>
-                       
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <button class="btn btn-link" style="font-size:16px;" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                    שפה (הבנה והבעה)
-                                                                    </button> 
-                                                            </div>
+                                                                    <div class="col-lg-12 col-xl-12">
 
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:LightCyan; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
+                                             <div id="accordion3" class="card-accordion">
+                                <div class="card collapse-icon accordion-icon-rotate">
+                                <div class="card">
+                                        <div class="card-header" id="headingGOne">
+                                            <button type='button' class="btn btn-link " style="font-size:18px; " data-toggle="collapse" data-target=" <?php echo '#accordionC'.$i; ?>" aria-expanded="true" aria-controls="<?php echo 'accordionC'.$i; ?>">
+                                            דוח לתאריך  <?= $row3D['date'] ?></button> 
+                                        </div>
+                                        <div id="<?php echo 'accordionC'.$i; ?>" class="collapse" aria-labelledby="headingGOne" data-parent= <?php echo '#accordionC'.$i; ?>>
 
-                                                                <h5 style ="display: inline"> <b> מבין את התכנים הנלמדים בגן </b></h5>
-                                                                <span style=" text-align: right; " class="media-heading text-bold-700"><?php echo '- '.$row3D['Language1'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b>מבין ועונה נכון על שאלות שנשאל </b></h5>
-                                                                <span style=" text-align: right; " class="media-heading text-bold-700"><?php echo '- '.$row3D['Language2'] ?></span>                                                                        
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b>מתאר באופן מילולי תמונות שמוצגות לו </b></h5>
-                                                                <span style=" text-align: right; " class="media-heading text-bold-700"><?php echo '- '.$row3D['Language3'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b>האם קיים חוסר שטף בדיבור (גמגום)?</b></h5>
-                                                                <span style=" text-align: right; " class="media-heading text-bold-700"><?php echo '- '.$row3D['Language4'] ?></span>
+                                                <div class="col-lg-12 col-xl-12 text-center" style="margin-bottom:10%" >
+                                                              <div class="card">
+                                                               <h4> שפה (הבנה והבעה)</h4>    
+                                                                <div class="card-body" style="background-color:LightCyan">
+                                                                 <h5> <b>  מבינ/ה את התכנים הנלמדים בגן-  </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['Language1'] ?></p><br>                                                                 <br>
+                                                                <h5> <b>מבינ/ה ועונה נכון על שאלות שנשאל-</b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['Language2'] ?></p><br>                                                                   
+                                                                <h5> <b>מתאר/ת באופן מילולי תמונות שמוצגות לו- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['Language3'] ?></p><br>                                                                 <br>
+                                                                <h5> <b>האם קיים חוסר שטף בדיבור (גמגום)?</b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['Language4'] ?></p><br>                                                                 </div>
+                                                          
+                                                                <h4> תפקוד חברתי ותקשורתי </h4>
+                                                                <div class="card-body" style="background-color:Lavender">
+                                                                <h5 > <b> יוצר/ת קשר עם ילדים ומסוגל/ת ליזום משחק- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['communication1'] ?></p><br>                                                                 <br>
+                                                                <h5> <b> משתתפ/ת בתחרויות ומקבל/ת הן הצלחה והן כישלון- </b></h5>
+                                                                 <p class="media-heading text-bold-700"><?php echo $row3D['communication2'] ?></p><br>                                                                 <br>
+                                                                <h5> <b> מגיב/ה באלימות פיזית או מילולית- </b></h5>
+                                                                <p class="media-heading text-bold-700"> <?php echo $row3D['communication3'] ?></p><br>                                                                 <br>
+                                                                <h5 > <b> אינו/ה מפרש/ת רמזים וסיטואציות חברתיות- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['communication4'] ?></p><br>                                                                 <br>
+                                                                </div>
+
+                                                                <h4> מוטוריקה עדינה </h4>
+                                                                <div class="card-body" style="background-color:LavenderBlush">
+                                                                <h5 > <b> אחיזה ושליטה בכלי כתיבה- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['motorica1'] ?></p><br>                                                                 <br>
+                                                                <h5 > <b> ציור, צביעה ויצירה- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['motorica2'] ?></p><br>                                                                 <br>
+                                                                <h5 > <b> משחקי בנייה והרכבה- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['motorica3'] ?></p><br>                                                                 <br>
+                                                                <h5 > <b> מניפולציות בכף היד (חרוזים והרכבות קטנות)- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['motorica4'] ?></p><br> 
                                                                 <br>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <h4 class="mb-0">
-                                                                    <button class="btn btn-link" style="font-size:16px" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                    תפקוד חברתי ותקשורתי
-                                                                    </button>
-                                                                </h4>
-                                                            </div>
-
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:Lavender; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
-                                                                <h5 style ="display: inline"> <b> יוצר קשר עם ילדים ומסוגל ליזום משחק </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['communication1'] ?></span>
-                                                                <br>
-
-                                                                <h5 style ="display: inline"> <b> משתתף בתחרויות ומקבל הן הצלחה והן כישלון </b></h5>
-                                                                    <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['communication2'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> מגיב באלימות פיזית או מילולית </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['communication3'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> אינו מפרש רמזים וסיטואציות חברתיות </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['communication4'] ?></span>
-                                                                <br>
+                    
+                                                                <h4> תפקודי קשב</h4> 
+                                                                 <div class="card-body" style="background-color:HoneyDew">
+                                                                <h5> <b> אימפולסיבי/ת- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['attention1'] ?></p><br>                                                                <br>
+                                                                <h5 > <b> קשוב/ה להוראות- </b></h5>
+                                                                <p s class="media-heading text-bold-700"><?php echo $row3D['attention2'] ?></p><br>                                                                <br>
+                                                                <h5> <b> מתמיד/ה במשימות- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['attention3'] ?></p><br>                                                                
+                                                                <h5 > <b> מרבה להתנועע- </b></h5>
+                                                                <p  class="media-heading text-bold-700"><?php echo $row3D['attention4'] ?></p><br>
+                                                                  </div>
+                                                           
+                                                                <h4> תפקוד תנועתי</h4> 
+                                                                <div class="card-body" style="background-color:LightCyan">
+                                                                 <h5> <b> הליכה וריצה- </b></h5>
+                                                                <p  class="media-heading text-bold-700"><?php echo  $row3D['movement1'] ?></p><br>
+                                                                <h5> <b> קפיצה </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['movement2'] ?></p><br>
+                                                                <h5> <b> השתתפות בריתמיקה- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['movement3'] ?></p><br>
+                                                                <h5> <b> משחקי כדור- </b></h5>
+                                                                <p  class="media-heading text-bold-700"><?php echo $row3D['movement4'] ?></p><br>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <h4 class="mb-0">
-                                                                    <button class="btn btn-link" style="font-size:16px" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                    מוטוריקה עדינה
-                                                                    </button>
-                                                                </h4>
-                                                            </div>
-
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:LavenderBlush; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
-                                                                <h5 style ="display: inline"> <b> אחיזה ושליטה בכלי כתיבה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['motorica1'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> ציור, צביעה ויצירה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['motorica2'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> משחקי בנייה והרכבה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['motorica3'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> מניפולציות בכף היד (חרוזים והרכבות קטנות) </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['motorica4'] ?></span>
-                                                                <br>
+                                                         
+                                                                <h4> מידת העצמאות והתלות</h4>
+                                                                <div class="card-body" style="background-color:Lavender">
+                                                                <h5> <b> ביצוע משימות- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['independence1'] ?></p><br>
+                                                                <h5> <b> אכילה- </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['independence2'] ?></p><br>
+                                                                <h5> <b> שמירה על הניקיון-  </b></h5>
+                                                                <p class="media-heading text-bold-700"><?php echo $row3D['independence3'] ?></p><br>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <h4 class="mb-0">
-                                                                    <button class="btn btn-link" style="font-size:16px" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                    תפקודי קשב
-                                                                    </button>
-                                                                </h4>
-                                                            </div>
-
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:HoneyDew; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
-                                                                <h5 style ="display: inline"> <b> אימפולסיבי </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['attention1'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> קשוב להוראות </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['attention2'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> מתמיד במשימות </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['attention3'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> מרבה להתנועע </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['attention4'] ?></span>
-                                                                <br>
+                                                                </div>        
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <h4 class="mb-0">
-                                                                    <button class="btn btn-link" style="font-size:16px" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                תפקוד תנועתי
-                                                                    </button>
-                                                                </h4>
-                                                            </div>
-
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:LightCyan; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
-                                                                <h5 style ="display: inline"> <b> הליכה וריצה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['movement1'] ?></span><br>
-                                                                       
-                                                                <h5 style ="display: inline"> <b> קפיצה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['movement2'] ?></span><br>
-                                                               
-
-                                                                <h5 style ="display: inline"> <b> השתתפות בריתמיקה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['movement3'] ?></span><br>
-
-                                                                <h5 style ="display: inline"> <b> משחקי כדור </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '. $row3D['movement4'] ?></span><br>
-                                                                
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-xl-10">
-                                                <div id="accordion3" class="card-accordion">
-                                                    <div class="card collapse-icon accordion-icon-rotate">
-                                                        <div class="card">
-                                                            <div class="card-header" id="headingGOne">
-                                                                <h4 class="mb-0">
-                                                                    <button class="btn btn-link" style="font-size:16px" data-toggle="collapse" data-target="#accordionC1" aria-expanded="true" aria-controls="accordionC1">
-                                                                    מידת העצמאות והתלות
-                                                                    </button>
-                                                                </h4>
-                                                            </div>
-
-                                                            <div id="accordionC1" class="collapse show" aria-labelledby="headingGOne" data-parent="#accordion3">
-                                                                <div class="card-body" style="background-color:Lavender; opacity: 0.8">
-                                                                <div class="row skin skin-flat">
-                                                                <div class="col-md-11 col-sm-12">
-                                                                <h5 style ="display: inline"> <b> ביצוע משימות </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['independence1'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> אכילה </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['independence2'] ?></span>
-                                                                <br>
-                                                                <h5 style ="display: inline"> <b> שמירה על הניקיון  </b></h5>
-                                                                <span style=" text-align: center; " class="media-heading text-bold-700"><?php echo '- '.$row3D['independence3'] ?></span>
-                                                                <br>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            </div>
-                                            </div>
-                      
-                       
-                                        <?php }
+                                                </div>
+                                                </div>
+                                        <?php                            
+                                           $i++; 
+                                        }
                                         }
 
                                         else {  ?>
-                                        <h2 style =" text-align: center;">אין רישום עבור יום זה</h2>
-                                             
+                                           <div style ="margin:auto"> 
+                                        <h2> לא מולאו דוחות עבור ילד זה </h2>
+                                             </div>
                                             <?php  }
                                         ?>
                                        
                                         </div>
                                                 </div>
-                                            </div>
-                                            </div>
-                                        </section>
-                                    </div>
+                                               
                                 </div>
                             </div>
                         </div>

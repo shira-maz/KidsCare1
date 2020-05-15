@@ -60,7 +60,7 @@ $row = mysqli_fetch_array($result);
                 <li class=" nav-item"><a href="ShowBulletinBoard.php"><i class="ft-message-circle"></i><span class="menu-title" data-i18n="">לוח מודעות</span><span class="badge badge badge-info badge-pill float-right mr-2">3</span></a>
                 </li>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="ft-edit"></i><span class="menu-title" data-i18n="">דוח התפתחות</span></a>
+                <li class=" nav-item"><a href="developmentalReports.php"><i class="ft-edit"></i><span class="menu-title" data-i18n="">דוח התפתחות</span></a>
                 </li>
             </ul>
         </div>

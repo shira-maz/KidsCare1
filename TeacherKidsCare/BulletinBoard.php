@@ -2,9 +2,8 @@
 include ('Templates/DB.php');
 include ('Templates/head.php');
 include ('Templates/menu.php');
-
 ?>
-             
+   
 <title>KidsCare-Bulletin Board</title>
 
 <!DOCTYPE html>
@@ -43,13 +42,13 @@ include ('Templates/menu.php');
 
                                                     <?php
                                                     $i=1;
-                                                    $sql = "SELECT * FROM notes ORDER BY date";
+                                                    $sql = "SELECT * FROM notes ORDER BY date  DESC";
                                                     $result1 = $conn->query($sql);
                                                     $conn->close();
                                                 if ($result1->num_rows > 0) {
                                                     while ($row = $result1->fetch_assoc()) { ?>
 
-                                                    <div class="col-md-4 mt-4">
+                                                      <div class="col-sm-7 col-xs-5 col-md-6 col-xl-4 mt-3">
                                                     <form method="post" action="deleteNote.php">
                                                         <ul class="ul-notes">
                                                             <li class="li-notes">
@@ -57,7 +56,7 @@ include ('Templates/menu.php');
                                                             <input name=date value= "<?= $row['date'] ?>" hidden>
                                                             <input name=text value= "<?= $row['text'] ?>" hidden>
                                                             <input name=id value= "<?= $row['id'] ?>" hidden>
-                                                            <button type="submit" class="close" style="margin: 5% 20% 0 0;">x</button>
+                                                            <button type="submit" class="close" style="margin: 2% 15% 0 0;">x</button>
                                                             <a class="a-notes" class="text-center">
                                                                 <h2 class="h2-notes text-center"> <?= $row['title'] ?></h2>
                                                                 <h6 class="date-notes text-center"><?= $row['date'] ?></h6>

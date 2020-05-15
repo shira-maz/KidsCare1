@@ -6,6 +6,7 @@ include ('Templates/DB.php');
 <?php
 include ('Templates/DB.php');
 $date1 =date("Y-m-d");
+ob_start();
 ?>
 
 <!DOCTYPE html>
