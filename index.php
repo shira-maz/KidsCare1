@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="rtl">
-<!-- BEGIN: Head-->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -28,19 +27,13 @@
     <link rel="stylesheet" type="text/css" href="app-assets/css-rtl/core/menu/menu-types/vertical-menu.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css-rtl/core/colors/palette-gradient.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css-rtl/pages/login-register.css">
-    <!-- END: Page CSS-->
 
-    <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="assets/css/style-rtl.css">
-    <!-- END: Custom CSS-->
 
 </head>
-<!-- END: Head-->
 
-<!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu 1-column  bg-full-screen-image blank-page blank-page" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="1-column">
-        <!-- BEGIN: Content-->
         <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
@@ -68,27 +61,13 @@
             </div>
         </div>
     </div>
-    <!-- END: Content-->
 
-
-    <!-- BEGIN: Vendor JS-->
     <script src="app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
     <script src="app-assets/vendors/js/forms/validation/jqBootstrapValidation.js" type="text/javascript"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
     <script src="app-assets/js/core/app-menu.js" type="text/javascript"></script>
     <script src="app-assets/js/core/app.js" type="text/javascript"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
     <script src="app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
-    <!-- END: Page JS-->
 
 </body>
-<!-- END: Body-->
 
 </html>
